@@ -71,9 +71,36 @@ class OAuth2(Auth):
                 'consumer_key and a consumer_secret.')
 
     def encode_params(self, base_url, method, params):
+        """Encodes the given parameters into a URL query string.
+        Parameters:
+            - base_url (str): The base URL to be used for the query string.
+            - method (str): The HTTP method to be used for the request.
+            - params (dict): A dictionary of parameters to be encoded into the query string.
+        Returns:
+            - str: The encoded URL query string.
+        Processing Logic:
+            - Encodes the given parameters using the urlencode function.
+            - The resulting string is returned.
+            - The resulting string is formatted as a URL query string.
+            - The resulting string does not include the base URL or the HTTP method."""
+        
         return urlencode(params)
 
     def generate_headers(self):
+        """Generates headers for an API request.
+        Parameters:
+            - self (object): The object containing the bearer token, consumer key, and consumer secret.
+        Returns:
+            - headers (dict): A dictionary containing the necessary headers for the API request.
+        Processing Logic:
+            - If a bearer token is provided, it is used in the Authorization header.
+            - If no bearer token is provided, the consumer key and consumer secret are used to generate a Basic Authorization header.
+            - The headers are encoded in UTF-8 format.
+        Example:
+            headers = generate_headers(self)
+            # headers = {'Authorization': 'Bearer abc123'}  # if bearer token is provided
+            # headers = {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8', 'Authorization': 'Basic def456'}  # if no bearer token is provided"""
+        
         if self.bearer_token:
             headers = {
                 'Authorization': 'Bearer {0}'.format(
