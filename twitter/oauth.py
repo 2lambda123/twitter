@@ -97,6 +97,21 @@ class OAuth(Auth):
                 'You must supply strings for token_secret and consumer_secret, not None.')
 
     def encode_params(self, base_url, method, params):
+        """Encode parameters for OAuth 1.0 authentication.
+        Parameters:
+            - base_url (str): The base URL for the API request.
+            - method (str): The HTTP method for the API request.
+            - params (dict): A dictionary of parameters to be encoded.
+        Returns:
+            - str: The encoded parameters with the OAuth signature appended.
+        Processing Logic:
+            - Adds OAuth parameters to the given parameters.
+            - Encodes the parameters using the OAuth signature method.
+            - Returns the encoded parameters with the OAuth signature appended.
+        Example:
+            encode_params("https://api.example.com", "GET", {"param1": "value1", "param2": "value2"})
+            # Returns "param1=value1&param2=value2&oauth_token=abc123&oauth_consumer_key=12345&oauth_signature_method=HMAC-SHA1&oauth_version=1.0&oauth_timestamp=1234567890&oauth_nonce=1234567890&oauth_signature=abc123""""
+        
         params = params.copy()
 
         if self.token:
@@ -121,6 +136,15 @@ class OAuth(Auth):
         return enc_params + "&" + "oauth_signature=" + urllib_parse.quote(signature, safe='~')
 
     def generate_headers(self):
+        """"Generates a dictionary of headers for an HTTP request."
+        Parameters:
+            - self (object): The object that the function is called on.
+        Returns:
+            - dict: A dictionary of headers for an HTTP request.
+        Processing Logic:
+            - Calls the function on an object.
+            - Returns an empty dictionary."""
+        
         return {}
 
 # apparently contrary to the HTTP RFCs, spaces in arguments must be encoded as
@@ -129,6 +153,17 @@ class OAuth(Auth):
 # So here is a specialized version which does exactly that.
 # In Python2, since there is no safe option for urlencode, we force it by hand
 def urlencode_noplus(query):
+    """"URL encodes the given query without using the plus sign."
+    Parameters:
+        - query (str): The query to be encoded.
+    Returns:
+        - str: The encoded query.
+    Processing Logic:
+        - Replaces tildes with a placeholder.
+        - Encodes the query using UTF-8.
+        - Replaces the placeholder with tildes.
+        - Replaces plus signs with %20."""
+    
     if not PY_3_OR_HIGHER:
         new_query = []
         TILDE = '____TILDE-PYTHON-TWITTER____'
